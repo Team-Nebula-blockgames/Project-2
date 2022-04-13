@@ -6,19 +6,24 @@ import github from "../icons/github.svg";
 import logo from "../icons/logo.svg";
 import upload from "../icons/upload.svg";
 import addressShortner from "../utils/addressShortener";
+import UploadForm from "../Components/uploadForm";
 
 function Home(props) {
   const { address, initialize } = props;
-  // const [addres, setAddress] = useState("Connect Wallet");
+  const [uploadModal, setUploadModal] = useState(false);
 
+  //an array of for looping throygh text and colors to be animated
   const effects = [
     { text: "Books", color: "#934DD9" },
     { text: "Articles", color: "#16A5FB" },
     { text: "Media", color: "#03CF36" },
   ];
+
+  //a variable for keeping track of the current text animation
   const [num, setNum] = useState(0);
   const [effect, setEffect] = useState(effects[num]);
 
+  //a function that changes between animations in thr effects array
   function change() {
     if (num !== 2) {
       setEffect(effects[num + 1]);
@@ -29,6 +34,7 @@ function Home(props) {
     }
   }
 
+  //a useEffect that changes the animation every 2seconds
   useEffect(() => {
     setTimeout(() => {
       change();
@@ -43,7 +49,6 @@ function Home(props) {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        position: "relative",
         width: "100vw",
         height: "100vh",
       }}
@@ -138,10 +143,12 @@ function Home(props) {
             onClick={async () => {
               console.log("Getting Data");
               console.log(address);
+              //checks if the user has already connected and connects if not
               if (address === "Connect Wallet") await initialize();
               console.log(address);
             }}
           >
+            {/* addresShortner returns a shortened version of an address */}
             {address === "Connect Wallet" ? address : addressShortner(address)}
           </Button>
         </Box>
@@ -190,7 +197,9 @@ function Home(props) {
           color: "#222222",
         }}
         onClick={async () => {
-          if (address === "Connect Wallet") await initialize();
+          address === "Connect Wallet"
+            ? await initialize()
+            : setUploadModal(true);
         }}
       >
         {address === "Connect Wallet" ? (
@@ -259,6 +268,7 @@ function Home(props) {
           />
         </Box>
       </Box>
+      {uploadModal && <UploadForm setUploadModal={setUploadModal} />}
     </Box>
   );
 }

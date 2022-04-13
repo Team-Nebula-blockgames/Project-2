@@ -26,7 +26,7 @@ function App() {
   };
 
   return (
-    <Box flexGrow={1}>
+    <Box flexGrow={1} position="relative">
       <Home setAddress={setAddress} address={address} initialize={initialize} />
     </Box>
   );
