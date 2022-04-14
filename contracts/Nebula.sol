@@ -97,4 +97,8 @@ contract Nebula is ERC721, Ownable {
     {
         return user[userId]._privateTokens;
     }
+
+    function shareToken(address addressTo, uint256 tokenId) public {
+        user[addressTo]._receivedTokens.push(tokenId);
+    }
 }
