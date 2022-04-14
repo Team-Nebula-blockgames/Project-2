@@ -10,11 +10,14 @@ import Input from "../Components/input";
 import GridBox from "../Components/gridBox";
 import Share from "../Components/share";
 import UploadForm from "../Components/uploadForm";
+import UploadSuccesful from "../Components/uploadSuccesful";
+import arrayBreaker from "../utils/arrayBreaker";
 
 function Home(props) {
   const { address, initialize, setView } = props;
   const [uploadModal, setUploadModal] = useState(false);
   const [shareModal, setShareModal] = useState(false);
+  const [page, setPage] = useState(0);
 
   const files = [
     {
@@ -52,7 +55,149 @@ function Home(props) {
       description: "A cool and fit blockchain dev",
       access: "public",
     },
+    {
+      name: "Seun",
+      description: "A cool and fit blockchain dev",
+      access: "public",
+    },
+    {
+      name: "Seun",
+      description: "A cool and fit blockchain dev",
+      access: "public",
+    },
+    {
+      name: "Seun",
+      description: "A cool and fit blockchain dev",
+      access: "public",
+    },
+    {
+      name: "Seun",
+      description: "A cool and fit blockchain dev",
+      access: "public",
+    },
+    {
+      name: "Seun",
+      description: "A cool and fit blockchain dev",
+      access: "private",
+    },
+    {
+      name: "Seun",
+      description: "A cool and fit blockchain dev",
+      access: "public",
+    },
+    {
+      name: "Seun",
+      description: "A cool and fit blockchain dev",
+      access: "public",
+    },
+    {
+      name: "Seun",
+      description: "A cool and fit blockchain dev",
+      access: "public",
+    },
+    {
+      name: "Seun",
+      description: "A cool and fit blockchain dev",
+      access: "public",
+    },
+    {
+      name: "Seun",
+      description: "A cool and fit blockchain dev",
+      access: "public",
+    },
+    {
+      name: "Seun",
+      description: "A cool and fit blockchain dev",
+      access: "public",
+    },
+    {
+      name: "Seun",
+      description: "A cool and fit blockchain dev",
+      access: "private",
+    },
+    {
+      name: "Seun",
+      description: "A cool and fit blockchain dev",
+      access: "public",
+    },
+    {
+      name: "Seun",
+      description: "A cool and fit blockchain dev",
+      access: "public",
+    },
+    {
+      name: "Seun",
+      description: "A cool and fit blockchain dev",
+      access: "public",
+    },
+    {
+      name: "Seun",
+      description: "A cool and fit blockchain dev",
+      access: "public",
+    },
+    {
+      name: "Seun",
+      description: "A cool and fit blockchain dev",
+      access: "public",
+    },
+    {
+      name: "Seun",
+      description: "A cool and fit blockchain dev",
+      access: "public",
+    },
+    {
+      name: "Seun",
+      description: "A cool and fit blockchain dev",
+      access: "private",
+    },
+    {
+      name: "Seun",
+      description: "A cool and fit blockchain dev",
+      access: "public",
+    },
+    {
+      name: "Seun",
+      description: "A cool and fit blockchain dev",
+      access: "public",
+    },
+    {
+      name: "Seun",
+      description: "A cool and fit blockchain dev",
+      access: "public",
+    },
+    {
+      name: "Seun",
+      description: "A cool and fit blockchain dev",
+      access: "public",
+    },
+    {
+      name: "Seun",
+      description: "A cool and fit blockchain dev",
+      access: "public",
+    },
+    {
+      name: "Seun",
+      description: "A cool and fit blockchain dev",
+      access: "public",
+    },
+    {
+      name: "Seun",
+      description: "A cool and fit blockchain dev",
+      access: "private",
+    },
+    {
+      name: "Seun",
+      description: "A cool and fit blockchain dev",
+      access: "public",
+    },
+    {
+      name: "Seun",
+      description: "A cool and fit blockchain dev",
+      access: "public",
+    },
   ];
+
+  const fileStorage = arrayBreaker(files, 12);
 
   return (
     <Box
@@ -240,7 +385,55 @@ function Home(props) {
           marginTop: "20px",
         }}
       >
-        <GridBox files={files} setShareModal={setShareModal} />
+        {fileStorage.map((item, index) => {
+          return (
+            page === index && (
+              <GridBox files={item} setShareModal={setShareModal} />
+            )
+          );
+        })}
+        <Box
+          sx={{
+            width: "100%",
+            marginTop: "10px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "flex-end",
+          }}
+        >
+          {fileStorage.map((item, index) => {
+            return (
+              <Box
+                sx={{
+                  background: page === index ? "#444444" : "#737373",
+                  border: "1px solid #AAAAAA",
+                  boxSizing: "border-box",
+                  borderRadius: "50%",
+                  height: "25px",
+                  width: "25px",
+                  marginRight: "8px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontSize: "15px",
+                  color: "white",
+                  cursor: "pointer",
+                }}
+                onClick={() => setPage(index)}
+              >
+                {index + 1}
+              </Box>
+            );
+          })}
+          <Typography
+            sx={{
+              fontWeight: 500,
+              fontSize: "16px",
+              lineHeight: "19px",
+              color: "#FFFFFF",
+            }}
+          >{`${page + 1} of ${fileStorage.length}`}</Typography>
+        </Box>
       </Box>
       <Box
         sx={{
