@@ -5,6 +5,7 @@ pragma solidity ^0.8.4;
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
+
 import "./Base64.sol";
 
 contract Nebula is ERC721, Ownable {
@@ -13,7 +14,7 @@ contract Nebula is ERC721, Ownable {
     // uint256 public tokenCounter;
 
     mapping(uint256 => string) private tokenIdtoMetadata;
-    uint256[] public publicTokens;
+    uint256[] public publicTokensIds;
     mapping (address => fileDetails) internal user;
 
     struct fileDetails {
@@ -37,7 +38,7 @@ contract Nebula is ERC721, Ownable {
             user[msg.sender]._privateTokens.push(newItemId);
         }else {
             user[msg.sender]._publicTokens.push(newItemId);
-            publicTokens.push(newItemId);
+            publicTokensIds.push(newItemId);
         }
     }
 
@@ -48,6 +49,23 @@ contract Nebula is ERC721, Ownable {
         string memory json = Base64.encode(bytes(string(abi.encodePacked(metadata))));
         return string(abi.encodePacked('data:application/json;base64,', json));
     }
-
+    // all tokens in system
+    function getAllPublicTokens() public view returns (uint256[] memory){
+    return publicTokensIds;
+    }
     
-}   
+    function shareToken(address to, uint256 idd)public  {
+        user[to]._receivedTokens.push(idd);
+      
+    }
+    
+    function getMyRecievedTokens(address costumer) public view returns(uint256[] memory){
+        return user[costumer]._receivedTokens;
+    }
+    function getMyPublicTokens(address costumer) public view returns (uint256[] memory){
+    return user[costumer]._publicTokens;
+    }
+    function getMyPrivateTokens(address costumer) public view returns(uint256[] memory){
+    return user[costumer]._privateTokens; 
+    }
+} 
