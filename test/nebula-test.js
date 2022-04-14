@@ -44,7 +44,7 @@ describe("UpBox", function () {
     })
 
     it("User should be able to share files", async function() {
-        const shareTx= await nebula.shareTokens(accounts[1].address, 1);
+        const shareTx= await nebula.shareToken(accounts[1].address, 1);
         await shareTx.wait();
 
         const recieved = await nebula.getUserRecievedTokens(accounts[1].address);
@@ -95,7 +95,7 @@ describe("UpBox", function () {
     })
 
     it("Should return received tokens of a user", async function() {
-        const shareTx= await nebula.shareTokens(accounts[1].address, 1);
+        const shareTx= await nebula.shareToken(accounts[1].address, 1);
         await shareTx.wait();
 
         const received = await nebula.getUserRecievedTokens(accounts[1].address);
