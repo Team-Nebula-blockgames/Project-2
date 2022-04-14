@@ -11,7 +11,7 @@ import "./Base64.sol";
 contract Nebula is ERC721, Ownable {
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIds;
-    // uint256 public tokenCounter;
+   
 
     mapping(uint256 => string) private tokenIdtoMetadata;
     uint256[] public publicTokensIds;
@@ -49,23 +49,36 @@ contract Nebula is ERC721, Ownable {
         string memory json = Base64.encode(bytes(string(abi.encodePacked(metadata))));
         return string(abi.encodePacked('data:application/json;base64,', json));
     }
-    // all tokens in system
+    
+    /// @notice returns all tokens that are Public.
     function getAllPublicTokens() public view returns (uint256[] memory){
     return publicTokensIds;
     }
     
-    function shareToken(address to, uint256 idd)public  {
-        user[to]._receivedTokens.push(idd);
-      
+    /** 
+    @dev gets tokens that were shared to our customer.
+    @notice This function returns an array of tokenIds that were shared to our customer.
+    @param userId address of the customer.
+    */ 
+    function getUserRecievedTokens(address userId) public view returns(uint256[] memory){
+        return user[userId]._receivedTokens;
     }
-    
-    function getMyRecievedTokens(address costumer) public view returns(uint256[] memory){
-        return user[costumer]._receivedTokens;
+
+    /** 
+    @dev gets tokens our customer made public
+    @notice This function returns an array of tokenIds that our customer made public.
+    @param userId address of the customer.
+    */ 
+    function getUserPublicTokens(address userId) public view returns (uint256[] memory){
+    return user[userId]._publicTokens;
     }
-    function getMyPublicTokens(address costumer) public view returns (uint256[] memory){
-    return user[costumer]._publicTokens;
-    }
-    function getMyPrivateTokens(address costumer) public view returns(uint256[] memory){
-    return user[costumer]._privateTokens; 
+
+    /** 
+    @dev gets tokens our customer made private
+    @notice This function returns an array of tokenIds that our customer made private.
+    @param userId address of the customer.
+    */ 
+    function getUserPrivateTokens(address userId) public view returns(uint256[] memory){
+    return user[userId]._privateTokens; 
     }
 } 
