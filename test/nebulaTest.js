@@ -21,9 +21,15 @@ describe("NebulaNFT Contract 💢", function () {
   });
 
   it("Should return tokenUri of token", async () => {
-    let metaData = JSON.stringify({ name: "name" }); // metadata input to uploadFile function
+    let metaData = JSON.stringify({ game: "name" }); // metadata input to uploadFile function
+    /*
+    The base64 encoded version of metadata {"game":"name"} gotten from https://www.browserling.com/tools/json-to-base64
+    */
+    let metaDataBase64 = "eyJnYW1lIjoibmFtZSJ9";
     await nebulaContract.uploadFile(metaData, false); // call to uploadFile
     let tokenUri = await nebulaContract.tokenURI(1); // call to get the just uploaded file metaData
-    expect(tokenUri).equal(metaData);
+    console.log("tokenUri:", tokenUri);
+    expectedTokenUri = `data:application/json;base64,${metaDataBase64}`;
+    expect(tokenUri).equal(expectedTokenUri);
   });
 });

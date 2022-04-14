@@ -47,11 +47,10 @@ contract Nebula is ERC721, Ownable {
         returns (string memory)
     {
         string memory metadata = tokenIdtoMetadata[tokenId];
-        return metadata;
-        // string memory json = Base64.encode(
-        //     bytes(string(abi.encodePacked(metadata)))
-        // );
-        // return string(abi.encodePacked("data:application/json;base64,", json));
+        string memory json = Base64.encode(
+            bytes(string(abi.encodePacked(metadata)))
+        );
+        return string(abi.encodePacked("data:application/json;base64,", json));
     }
 
     /// @notice returns all tokens that are Public.
