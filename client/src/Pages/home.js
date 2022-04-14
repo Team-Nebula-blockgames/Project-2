@@ -9,7 +9,7 @@ import addressShortner from "../utils/addressShortener";
 import UploadForm from "../Components/uploadForm";
 
 function Home(props) {
-  const { address, initialize } = props;
+  const { address, initialize, setView } = props;
   const [uploadModal, setUploadModal] = useState(false);
 
   //an array of for looping throygh text and colors to be animated
@@ -123,6 +123,7 @@ function Home(props) {
                   margin: 0,
                   cursor: "pointer",
                 }}
+                onClick={() => setView("myfiles")}
               >
                 Files
               </Typography>
@@ -195,6 +196,9 @@ function Home(props) {
           fontSize: "20px",
           lineHeight: "29px",
           color: "#222222",
+          "&:hover": {
+            backgroundColor: "#B973FF",
+          },
         }}
         onClick={async () => {
           address === "Connect Wallet"
