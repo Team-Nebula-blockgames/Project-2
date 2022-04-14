@@ -43,28 +43,29 @@ describe("UpBox", function () {
         console.log("Uploading a private file...")
     })
 
-    // it("User should be able to share files", async function() {
-    //     const shareTx= await nebula.shareToken(accounts[1].address, 1);
-    //     await shareTx.wait();
+    it("User should be able to share files", async function() {
+        const shareTx= await nebula.shareTokens(accounts[1].address, 1);
+        await shareTx.wait();
 
-    //     const recieved = await nebula.getMyRecievedTokens(accounts[1].address);
-    //     expect(Number(recieved)).to.equals(1);
-    // })
-
-    it("Should return a URI for a token", async function() {
-        const uploadPublicTx = await nebula.uploadFile("Hello world!", false);
-        await uploadPublicTx.wait();
-        
-        let tokenId = 1;
-        json = "SGVsbG8gd29ybGQh";
-        
-        const URI = await nebula.tokenURI(tokenId);
-        expect(URI).to.equals(
-            String(('data:application/json;base64,'+ json)),
-            "Could not get URI!"
-        );
-        console.log("Getting token URI...")
+        const recieved = await nebula.getUserRecievedTokens(accounts[1].address);
+        expect(Number(recieved)).to.equals(1);
+        console.log("Sharing...");
     })
+
+    // it("Should return a URI for a token", async function() {
+    //     const uploadPublicTx = await nebula.uploadFile("Hello world!", false);
+    //     await uploadPublicTx.wait();
+        
+    //     let tokenId = 1;
+    //     json = "SGVsbG8gd29ybGQh";
+        
+    //     const tokenURI = await nebula.tokenURI(tokenId);
+    //     const baseURI = await nebula._getBaseURI();
+    //     expect(tokenURI + "1").to.equals(
+    //         baseURI
+    //     );
+    //     console.log("Getting token URI...")
+    // })
 
     it("Should return all public files in the library", async function() {
         const uploadPublicTx = await nebula.uploadFile("Hello world!", false);
@@ -93,12 +94,12 @@ describe("UpBox", function () {
         console.log("Getting all private files of a user...")
     })
 
-    it("Should return received tokens of a usre", async function() {
-        // const shareTx= await nebula.shareToken(accounts[1].address, 1);
-        // await shareTx.wait();
+    it("Should return received tokens of a user", async function() {
+        const shareTx= await nebula.shareTokens(accounts[1].address, 1);
+        await shareTx.wait();
 
         const received = await nebula.getUserRecievedTokens(accounts[1].address);
-        expect(Number(received)).to.equals(0, "Could not get recieved tokens!");
+        expect(Number(received)).to.equals(1, "Could not get recieved tokens!");
         console.log("Getting all received files...")
     })
 

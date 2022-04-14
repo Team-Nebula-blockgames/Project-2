@@ -25,7 +25,10 @@ contract Nebula is ERC721, Ownable {
 
     constructor() ERC721("SHELF", "SLF") {}
 
-
+    /**
+    @notice Uploads a new file
+    @param _isPrivate privacy of uploaded file
+     */
     function uploadFile(string memory input, bool _isPrivate) public {
         // use tokenCounter as an id for each created token
         // use _safeMint inherited from ERC721 contract to mint a token
@@ -42,12 +45,20 @@ contract Nebula is ERC721, Ownable {
         }
     }
 
-
     /// @dev Encodes the files metadata as JSON.
     function tokenURI(uint256 tokenId) override(ERC721) public view returns (string memory) {
         string memory metadata = tokenIdtoMetadata[tokenId];
         string memory json = Base64.encode(bytes(string(abi.encodePacked(metadata))));
         return string(abi.encodePacked('data:application/json;base64,', json));
+    }
+
+    /**
+    @notice shares tokens to another user
+    @param _to address of receiver
+    @param _tokenId token to be shared
+     */
+    function shareTokens(address _to, uint256 _tokenId) public {
+        user[_to]._receivedTokens.push(_tokenId);
     }
     
     /// @notice returns all tokens that are Public.
