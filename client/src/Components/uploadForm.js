@@ -148,6 +148,9 @@ function UploadForm(props) {
             lineHeight: "24px",
             color: "#111111",
             marginTop: "45.98px",
+            "&:hover": {
+              backgroundColor: "#B973FF",
+            },
           }}
         >
           Upload File
