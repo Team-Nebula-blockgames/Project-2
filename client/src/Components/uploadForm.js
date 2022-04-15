@@ -26,13 +26,12 @@ function UploadForm(props) {
       description: description,
     };
     const fileToUpload = JSON.stringify(file);
-    if (validateMetaData(fileToUpload))
-      contractMethods.uploadFile(fileToUpload, privateFile).then(() => {
-        setSuccesModal(true);
-        setTimeout(() => {
-          setSuccesModal(false);
-        }, 2000);
-      });
+    contractMethods.uploadFile(fileToUpload, privateFile).then(() => {
+      setSuccesModal(true);
+      setTimeout(() => {
+        setSuccesModal(false);
+      }, 2000);
+    });
   };
 
   return (

@@ -290,7 +290,12 @@ function Home(props) {
           />
         </Box>
       </Box>
-      {uploadModal && <UploadForm setUploadModal={setUploadModal} />}
+      {uploadModal && (
+        <UploadForm
+          setUploadModal={setUploadModal}
+          contractMethods={contractMethods}
+        />
+      )}
       {succesModal && <UploadSuccesful setSuccesModal={setSuccesModal} />}
     </Box>
   );
