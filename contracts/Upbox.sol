@@ -25,7 +25,10 @@ contract Upbox is ERC721, Ownable {
 
     constructor() ERC721("SHELF", "SLF") {}
 
-
+    /**
+    @notice Uploads a new file
+    @param _isPrivate privacy of uploaded file
+     */
     function uploadFile(string memory input, bool _isPrivate) public {
         // use tokenCounter as an id for each created token
         // use _safeMint inherited from ERC721 contract to mint a token
@@ -41,7 +44,6 @@ contract Upbox is ERC721, Ownable {
             publicTokensIds.push(newItemId);
         }
     }
-
 
     /// @dev Encodes the files metadata as JSON.
     function tokenURI(uint256 tokenId) override(ERC721) public view returns (string memory) {
