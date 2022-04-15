@@ -125,11 +125,12 @@ describe("Upbox Contract 💢", function () {
     //Arrange
     let receiver = accounts[1];
     let metaData = JSON.stringify({ game: "name" });
-    let isPrivate = false;
+    let isPrivate = true;
     let noOfFilesShared = 5;
 
     //Act
     for (let tokenId = 1; tokenId <= noOfFilesShared; tokenId++) {
+      //loop to upload and share file.
       await upboxContract.uploadFile(metaData, isPrivate);
       const shareTx = await upboxContract.shareToken(receiver.address, tokenId);
       await shareTx.wait();

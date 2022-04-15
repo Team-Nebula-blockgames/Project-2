@@ -3,14 +3,13 @@ pragma solidity ^0.8.4;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
+import "@openzeppelin/contracts/utils/Base64.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-
-import "./Base64.sol";
 
 contract Upbox is ERC721, Ownable {
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIds;
-    // uint256 public tokenCounter;
+    using Base64 for bytes;
 
     mapping(uint256 => string) private tokenIdtoMetadata;
     uint256[] public publicTokensIds;
@@ -53,10 +52,13 @@ contract Upbox is ERC721, Ownable {
     {
         require(ownerOf(tokenId) != address(0), "Token does not exist.");
         string memory metadata = tokenIdtoMetadata[tokenId];
-        string memory json = Base64.encode(
-            bytes(string(abi.encodePacked(metadata)))
-        );
-        return string(abi.encodePacked("data:application/json;base64,", json));
+        bytes memory jsonBytes = bytes(string(abi.encodePacked(metadata)));
+        string memory jsonString = jsonBytes.encode();
+
+        return
+            string(
+                abi.encodePacked("data:application/json;base64,", jsonString)
+            );
     }
 
     // all tokens in system
@@ -65,7 +67,7 @@ contract Upbox is ERC721, Ownable {
     }
 
     function shareToken(address to, uint256 tokenId) public {
-        require(ownerOf(tokenId) == msg.sender, "Only token owner can share.");
+        require(ownerOf(tokenId) == msg.sender, "Only file owner can share.");
         userTokens[to]._receivedTokens.push(tokenId);
     }
 
