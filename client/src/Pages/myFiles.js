@@ -229,7 +229,7 @@ function Home(props) {
         />
         <Box
           sx={{
-            width: address === "Connect Wallet" ? "475px" : "303px",
+            width: address === "Connect Wallet" ? "475px" : "430px",
             height: "40px",
             display: "flex",
             alignItems: "center",
@@ -268,7 +268,23 @@ function Home(props) {
               </Typography>
             </Box>
           ) : (
-            <Box sx={{ padding: 0, margin: 0 }}>
+            <Box sx={{ padding: 0, margin: 0, display: "flex" }}>
+              <Typography
+                sx={{
+                  fontWeight: 400,
+                  fontSize: "18px",
+                  lineHeight: "20px",
+                  textAlign: "center",
+                  color: "#FFFFFF",
+                  padding: 0,
+                  margin: 0,
+                  cursor: "pointer",
+                  marginRight: "49px",
+                }}
+                onClick={() => setView("home")}
+              >
+                Home
+              </Typography>
               <Typography
                 sx={{
                   fontWeight: 400,
@@ -280,9 +296,9 @@ function Home(props) {
                   margin: 0,
                   cursor: "pointer",
                 }}
-                onClick={() => setView("home")}
+                onClick={() => setView("library")}
               >
-                Home
+                Library
               </Typography>
             </Box>
           )}
