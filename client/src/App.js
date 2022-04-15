@@ -5,12 +5,21 @@ import Home from "./Pages/home";
 import MyFiles from "./Pages/myFiles";
 import Library from "./Pages/library";
 import getEthers from "./getEthers";
-// import { Contract, utils } from "ethers";
+import { Contract } from "ethers";
+import Nebula from "./contracts/Upbox.json";
+import "./styles/react-spinner-loader.css";
+import { Bars } from "react-loader-spinner";
 
 function App() {
   const [address, setAddress] = useState("Connect Wallet");
   const [provider, setProvider] = useState({});
   const [view, setView] = useState("home");
+  const [contractMethods, setContractMethods] = useState({});
+  const [publicFiles, setPublicFiles] = useState([]);
+  const [userPublicFiles, setUserPublicFiles] = useState([]);
+  const [userPrivateFiles, setUserPrivateFiles] = useState([]);
+  const [userRecievedFiles, setUserRecievedFiles] = useState([]);
+  const [loader, setLoader] = useState(false);
 
   useEffect(() => {
     const getData = async () => {
@@ -23,12 +32,63 @@ function App() {
   }, []);
 
   const initialize = async () => {
+    setLoader(true);
     const signer = provider.getSigner();
     const address = await signer.getAddress();
+    const nebulaContract = new Contract(
+      process.env.REACT_APP_NEBULA_ADDRESS,
+      Nebula.abi,
+      provider
+    );
+    const name = await nebulaContract.name();
+    console.log(name);
+    // const allPublicTokens = await nebulaContract.getAllPublicTokens();
+    // const myPublicTokens = await nebulaContract.getMyPublicTokens();
+    // const myPrivateTokens = await nebulaContract.getMyPrivateTokens();
+    // const myRecievedTokens = await nebulaContract.getMyRecievedTokens();
+
+    // const getFileData = async (tokens, length) => {
+    //   const data = [];
+    //   for (var i = 0; i < length; i++) {
+    //     const fileData = await nebulaContract.tokenURI(tokens[i]);
+    //     data.push(JSON.parse(fileData));
+    //   }
+    //   return data;
+    // };
+
+    // const allPublic = await getFileData(allPublicTokens);
+    // const userPublic = await getFileData(myPublicTokens);
+    // const userPrivate = await getFileData(myPrivateTokens);
+    // const userRecieved = await getFileData(myRecievedTokens);
+
+    // console.log(allPublic);
+    // console.log(userPublic);
+
+    // setPublicFiles(allPublic);
+    // setUserPublicFiles(userPublic);
+    // setUserPrivateFiles(userPrivate);
+    // setUserRecievedFiles(userRecieved);
+
+    // setContractMethods(nebulaContract.connect(signer));
     setAddress(address);
+    setLoader(false);
   };
 
-  return (
+  return loader ? (
+    <Box
+      sx={{
+        width: "100vw",
+        height: "100vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        position: "relative",
+        background: "#222222",
+      }}
+    >
+      <Bars color="#B973FF" height={300} width={300} />
+    </Box>
+  ) : (
     <Box flexGrow={1} position="relative">
       {view === "home" && (
         <Home
@@ -36,10 +96,31 @@ function App() {
           address={address}
           initialize={initialize}
           setView={setView}
+          contractMethods={contractMethods}
         />
       )}
-      {view === "myfiles" && <MyFiles address={address} setView={setView} />}
-      {view === "library" && <Library address={address} setView={setView} />}
+      {view === "myfiles" && (
+        <MyFiles
+          address={address}
+          setView={setView}
+          publicFiles={publicFiles}
+          userPublicFiles={userPublicFiles}
+          userPrivateFiles={userPrivateFiles}
+          userRecievedFiles={userRecievedFiles}
+          contractMethods={contractMethods}
+        />
+      )}
+      {view === "library" && (
+        <Library
+          address={address}
+          setView={setView}
+          publicFiles={publicFiles}
+          userPublicFiles={userPublicFiles}
+          userPrivateFiles={userPrivateFiles}
+          userRecievedFiles={userRecievedFiles}
+          contractMethods={contractMethods}
+        />
+      )}
     </Box>
   );
 }

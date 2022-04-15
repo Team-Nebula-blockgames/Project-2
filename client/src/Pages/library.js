@@ -14,10 +14,11 @@ import UploadSuccesful from "../Components/uploadSuccesful";
 import arrayBreaker from "../utils/arrayBreaker";
 
 function Library(props) {
-  const { address, initialize, setView } = props;
+  const { address, initialize, setView, publicFiles, contractMethods } = props;
   const [uploadModal, setUploadModal] = useState(false);
   const [shareModal, setShareModal] = useState(false);
   const [page, setPage] = useState(0);
+  const [succesModal, setSuccesModal] = useState(false);
 
   const files = [
     {
@@ -486,8 +487,19 @@ function Library(props) {
           />
         </Box>
       </Box>
-      {uploadModal && <UploadForm setUploadModal={setUploadModal} />}
-      {shareModal && <Share setShareModal={setShareModal} />}
+      {uploadModal && (
+        <UploadForm
+          setUploadModal={setUploadModal}
+          contractMethods={contractMethods}
+        />
+      )}
+      {shareModal && (
+        <Share
+          setShareModal={setShareModal}
+          contractMethods={contractMethods}
+        />
+      )}
+      {succesModal && <UploadSuccesful setSuccesModal={setSuccesModal} />}
     </Box>
   );
 }

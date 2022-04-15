@@ -6,19 +6,33 @@ import uploadGrey from "../icons/uploadGrey.svg";
 import Input2 from "./input2";
 import { Web3Storage } from "web3.storage";
 import linkCreator from "../utils/linkCreator";
+import validateMetaData from "../utils/validateMetaData";
 
 function UploadForm(props) {
-  const { setUploadModal } = props;
+  const { setUploadModal, contractMethods, setSuccesModal } = props;
   const [privateFile, setPrivateFile] = useState(false);
   const [files, setFiles] = useState("Upload file");
+  const [description, setDiscription] = useState("");
 
   const token = process.env.REACT_APP_TOKEN;
   const client = new Web3Storage({ token });
 
   const storeFiles = async () => {
-    // const files = await getFilesFromPath(file);
     const cid = await client.put(files);
-    console.log(linkCreator(cid, files[0].name));
+    const link = linkCreator(cid, files[0].name);
+    const file = {
+      name: files[0].name,
+      url: link,
+      description: description,
+    };
+    const fileToUpload = JSON.stringify(file);
+    if (validateMetaData(fileToUpload))
+      contractMethods.uploadFile(fileToUpload, privateFile).then(() => {
+        setSuccesModal(true);
+        setTimeout(() => {
+          setSuccesModal(false);
+        }, 2000);
+      });
   };
 
   return (
@@ -169,7 +183,7 @@ function UploadForm(props) {
             Make Private
           </Typography>
         </Box>
-        <Input2 />
+        <Input2 setDiscription={setDiscription} />
         <Button
           variant="contained"
           sx={{

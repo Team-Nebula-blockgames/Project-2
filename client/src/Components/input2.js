@@ -1,14 +1,14 @@
 import React from "react";
 
 function Input2(props) {
-  const { setText } = props;
+  const { setDiscription } = props;
   return (
     <div style={style.outer}>
       <textarea
         type="text"
         placeholder="Description"
         style={style.input}
-        onChange={(e) => setText(e.target.value)}
+        onChange={(e) => setDiscription(e.target.value)}
       />
     </div>
   );
