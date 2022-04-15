@@ -7,10 +7,12 @@ import logo from "../icons/logo.svg";
 import upload from "../icons/upload.svg";
 import addressShortner from "../utils/addressShortener";
 import UploadForm from "../Components/uploadForm";
+import UploadSuccesful from "../Components/uploadSuccesful";
 
 function Home(props) {
-  const { address, initialize, setView } = props;
+  const { address, initialize, setView, contractMethods } = props;
   const [uploadModal, setUploadModal] = useState(false);
+  const [succesModal, setSuccesModal] = useState(false);
 
   //an array of for looping throygh text and colors to be animated
   const effects = [
@@ -289,6 +291,7 @@ function Home(props) {
         </Box>
       </Box>
       {uploadModal && <UploadForm setUploadModal={setUploadModal} />}
+      {succesModal && <UploadSuccesful setSuccesModal={setSuccesModal} />}
     </Box>
   );
 }

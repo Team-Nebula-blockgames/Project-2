@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
@@ -14,10 +14,19 @@ import UploadSuccesful from "../Components/uploadSuccesful";
 import arrayBreaker from "../utils/arrayBreaker";
 
 function Home(props) {
-  const { address, initialize, setView } = props;
+  const {
+    address,
+    initialize,
+    setView,
+    userPublicFiles,
+    userPrivateFiles,
+    userRecievedFiles,
+    contractMethods,
+  } = props;
   const [uploadModal, setUploadModal] = useState(false);
   const [shareModal, setShareModal] = useState(false);
   const [page, setPage] = useState(0);
+  const [succesModal, setSuccesModal] = useState(false);
 
   const files = [
     {
@@ -486,8 +495,19 @@ function Home(props) {
           />
         </Box>
       </Box>
-      {uploadModal && <UploadForm setUploadModal={setUploadModal} />}
-      {shareModal && <Share setShareModal={setShareModal} />}
+      {uploadModal && (
+        <UploadForm
+          setUploadModal={setUploadModal}
+          contractMethods={contractMethods}
+        />
+      )}
+      {shareModal && (
+        <Share
+          setShareModal={setShareModal}
+          contractMethods={contractMethods}
+        />
+      )}
+      {succesModal && <UploadSuccesful setSuccesModal={setSuccesModal} />}
     </Box>
   );
 }
