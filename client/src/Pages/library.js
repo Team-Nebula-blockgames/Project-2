@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
@@ -13,7 +13,7 @@ import UploadForm from "../Components/uploadForm";
 import UploadSuccesful from "../Components/uploadSuccesful";
 import arrayBreaker from "../utils/arrayBreaker";
 
-function Home(props) {
+function Library(props) {
   const { address, initialize, setView } = props;
   const [uploadModal, setUploadModal] = useState(false);
   const [shareModal, setShareModal] = useState(false);
@@ -296,9 +296,9 @@ function Home(props) {
                   margin: 0,
                   cursor: "pointer",
                 }}
-                onClick={() => setView("library")}
+                onClick={() => setView("myfiles")}
               >
-                Library
+                My Files
               </Typography>
             </Box>
           )}
@@ -347,7 +347,7 @@ function Home(props) {
             color: "#FFFFFF",
           }}
         >
-          My Files
+          Library
         </Typography>
         <Box
           sx={{
@@ -492,4 +492,4 @@ function Home(props) {
   );
 }
 
-export default Home;
+export default Library;
