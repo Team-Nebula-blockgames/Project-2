@@ -1,17 +1,28 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import uploadGrey from "../icons/uploadGrey.svg";
-import TextField from "@mui/material/TextField";
 import Input2 from "./input2";
+import { Web3Storage } from "web3.storage";
+import linkCreator from "../utils/linkCreator";
 
 function UploadForm(props) {
   const { setUploadModal } = props;
   const [privateFile, setPrivateFile] = useState(false);
+  const [files, setFiles] = useState("Upload file");
+
+  const token = process.env.REACT_APP_TOKEN;
+  const client = new Web3Storage({ token });
+
+  const storeFiles = async () => {
+    // const files = await getFilesFromPath(file);
+    const cid = await client.put(files);
+    console.log(linkCreator(cid, files[0].name));
+  };
+
   return (
     <Box
-      va
       sx={{
         background: "rgba(34, 34, 34, 0.317)",
         display: "flex",
@@ -73,7 +84,6 @@ function UploadForm(props) {
             flexDirection: "row",
             justifyContent: "space-between",
             alignItems: "center",
-            padding: "8px 16px",
             width: "401px",
             height: "62px",
             border: "1px solid #AAAAAA",
@@ -82,22 +92,47 @@ function UploadForm(props) {
             marginTop: "66px",
           }}
         >
-          <Typography
-            sx={{
-              fontWeight: 400,
-              fontSize: "20px",
-              lineHeight: "24px",
-              color: "#888888",
+          <label
+            htmlFor="upload"
+            style={{
+              width: "100%",
+              height: "100%",
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+              padding: "8px 16px",
+              cursor: "pointer",
             }}
           >
-            Upload file
-          </Typography>
-          <img
-            src={uploadGrey}
-            alt="uploadgrey"
-            style={{ height: "15px", width: "20px" }}
-          />
+            <Typography
+              sx={{
+                fontWeight: 400,
+                fontSize: "20px",
+                lineHeight: "24px",
+                color: "#888888",
+              }}
+            >
+              {files === "Upload file" ? "Upload file" : files[0].name}
+            </Typography>
+
+            <img
+              src={uploadGrey}
+              alt="uploadgrey"
+              style={{ height: "15px", width: "20px" }}
+            />
+          </label>
         </Button>
+        <input
+          type="file"
+          id="upload"
+          style={{ display: "none" }}
+          onChange={() => {
+            const fileInput = document.getElementById("upload");
+            const selectedFile = fileInput.files;
+            setFiles(selectedFile);
+          }}
+        />
         <Box
           sx={{
             display: "flex",
@@ -151,6 +186,11 @@ function UploadForm(props) {
             "&:hover": {
               backgroundColor: "#B973FF",
             },
+          }}
+          onClick={() => {
+            if (files !== "Upload file") {
+              storeFiles().then(() => console.log("file uploaded"));
+            }
           }}
         >
           Upload File
