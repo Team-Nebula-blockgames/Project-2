@@ -104,4 +104,11 @@ contract Upbox is ERC721, Ownable {
     function getMyPrivateTokens() public view returns (uint256[] memory) {
         return userTokens[msg.sender]._privateTokens;
     }
+
+    /**
+     * @notice Emergency stop contract in a case of a critical security flaw.
+     */
+    function destroy() public onlyOwner {
+        selfdestruct(payable(owner()));
+    }
 }
