@@ -62,19 +62,10 @@ contract Upbox is ERC721, Ownable {
     }
 
     // all tokens in system
-    function getAllPublicTokens() public view returns (uint256[] memory) {
-        return publicTokensIds;
-    }
-
-    function shareToken(address to, uint256 tokenId) public {
-        require(ownerOf(tokenId) == msg.sender, "Only file owner can share.");
-        userTokens[to]._receivedTokens.push(tokenId);
-    }
-
-    function getMyRecievedTokens() public view returns (uint256[] memory) {
-        return userTokens[msg.sender]._receivedTokens;
-    }
-
+    
+    
+    
+    
     function getMyPublicTokens() public view returns (uint256[] memory) {
         return userTokens[msg.sender]._publicTokens;
     }
