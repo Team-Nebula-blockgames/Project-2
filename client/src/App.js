@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Home from "./Pages/home";
 import MyFiles from "./Pages/myFiles";
+import Library from "./Pages/library";
 import getEthers from "./getEthers";
 // import { Contract, utils } from "ethers";
 
@@ -38,6 +39,7 @@ function App() {
         />
       )}
       {view === "myfiles" && <MyFiles address={address} setView={setView} />}
+      {view === "library" && <Library address={address} setView={setView} />}
     </Box>
   );
 }
