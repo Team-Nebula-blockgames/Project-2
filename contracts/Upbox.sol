@@ -8,12 +8,12 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract Upbox is ERC721, Ownable {
     using Counters for Counters.Counter;
-    Counters.Counter private _tokenIds;
     using Base64 for bytes;
 
-    mapping(uint256 => string) private tokenIdtoMetadata;
+    Counters.Counter private _tokenIds;
     uint256[] public publicTokensIds;
     address[] public blackListedUsers;
+    mapping(uint256 => string) private tokenIdtoMetadata;
     mapping(address => UserTokens) internal userTokens;
 
     struct UserTokens {
@@ -21,6 +21,9 @@ contract Upbox is ERC721, Ownable {
         uint256[] _privateTokens;
         uint256[] _receivedTokens;
     }
+
+    event FileUploaded(address _user, uint _tokenId);
+    event FileShared(address _to, uint _tokenId);
 
     constructor() ERC721("Upbox", "BOX") {}
 
@@ -42,6 +45,7 @@ contract Upbox is ERC721, Ownable {
             userTokens[msg.sender]._publicTokens.push(newItemId);
             publicTokensIds.push(newItemId);
         }
+        emit FileUploaded(msg.sender, newItemId);
     }
 
     /// @dev Encodes the files metadata as JSON.
@@ -83,9 +87,14 @@ contract Upbox is ERC721, Ownable {
         return userTokens[msg.sender]._privateTokens;
     }
 
-    // share tokens
-    function shareToken(address to, uint256 idd) public {
-        userTokens[to]._receivedTokens.push(idd);
+    /**
+    @notice share tokens
+    @param _to address to share to.
+    @param _tokenId the token to share
+    */
+    function shareToken(address _to, uint256 _tokenId) public {
+        userTokens[_to]._receivedTokens.push(_tokenId);
+        emit FileShared(_to, _tokenId);
     }
 
     // users recieved tokens
@@ -106,10 +115,10 @@ contract Upbox is ERC721, Ownable {
     /** 
     @dev blacklists an address.
     @notice This function adds an address to our blacklisted addresses
-    @param userAddress the address to be blacklisted
+    @param _userAddress the address to be blacklisted
     */
-    function addblackListedUser(address userAddress) public onlyOwner {
-        blackListedUsers.push(userAddress);
+    function addblackListedUser(address _userAddress) public onlyOwner {
+        blackListedUsers.push(_userAddress);
     }
     
     // getblack listed users
