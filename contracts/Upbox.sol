@@ -69,7 +69,9 @@ contract Upbox is ERC721, Ownable {
             );
     }
 
-    // all tokens in system
+    /**
+    @dev get all the public tokens in the system
+     */
     function getAllPublicTokens() public view returns (uint256[] memory) {
         return publicTokensIds;
     }
@@ -100,12 +102,17 @@ contract Upbox is ERC721, Ownable {
         emit FileShared(_to, _tokenId);
     }
 
-    // users recieved tokens
+    /**
+        @dev gets all the token shared to a costumer 
+     */
     function getMyRecievedTokens() public view returns (uint256[] memory) {
         return userTokens[msg.sender]._receivedTokens;
     }
 
-    // remove public tokens _index = 0,1...
+    /**
+     @dev removes public tokens from an array
+     @notice remove according to pushed _index = 0,1...
+     */
     function removePublicTokens(uint256 _index) public onlyOwner {
         require(_index < publicTokensIds.length, "Upbox: Out of bound.");
         for (uint256 i = _index; i < publicTokensIds.length - 1; i++) {
