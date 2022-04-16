@@ -13,6 +13,7 @@ contract Upbox is ERC721, Ownable {
 
     mapping(uint256 => string) private tokenIdtoMetadata;
     uint256[] public publicTokensIds;
+    address[] public blackListedUsers;
     mapping(address => UserTokens) internal userTokens;
 
     struct UserTokens {
@@ -21,7 +22,7 @@ contract Upbox is ERC721, Ownable {
         uint256[] _receivedTokens;
     }
 
-    constructor() ERC721("Upbox", "UBX") {}
+    constructor() ERC721("Upbox", "BOX") {}
 
     /**
     @notice Uploads a new file
@@ -62,15 +63,64 @@ contract Upbox is ERC721, Ownable {
     }
 
     // all tokens in system
-    
-    
-    
-    
+    function getAllPublicTokens() public view returns (uint256[] memory) {
+        return publicTokensIds;
+    }
+
+    /** 
+    @dev gets tokens our customer made public
+    @notice This function returns an array of tokenIds that our customer made public.
+    */
     function getMyPublicTokens() public view returns (uint256[] memory) {
         return userTokens[msg.sender]._publicTokens;
     }
 
+    /** 
+    @dev gets tokens our customer made private
+    @notice This function returns an array of tokenIds that our customer made private.
+    */
     function getMyPrivateTokens() public view returns (uint256[] memory) {
         return userTokens[msg.sender]._privateTokens;
+    }
+
+    // share tokens
+    function shareToken(address to, uint256 idd) public {
+        userTokens[to]._receivedTokens.push(idd);
+    }
+
+    // users recieved tokens
+    function getMyRecievedTokens() public view returns (uint256[] memory) {
+        return userTokens[msg.sender]._receivedTokens;
+    }
+
+    // remove public tokens _index = 0,1...
+    function removePublicTokens(uint256 _index) public onlyOwner {
+        // delete publicTokensIds[tokenId];
+        require(_index < publicTokensIds.length, "out of bound");
+        for (uint256 i = _index; i < publicTokensIds.length - 1; i++) {
+            publicTokensIds[i] = publicTokensIds[i + 1];
+        }
+        publicTokensIds.pop();
+    }
+
+    /** 
+    @dev blacklists an address.
+    @notice This function adds an address to our blacklisted addresses
+    @param userAddress the address to be blacklisted
+    */
+    function addblackListedUser(address userAddress) public onlyOwner {
+        blackListedUsers.push(userAddress);
+    }
+    
+    // getblack listed users
+    function getblackListedUser() public view returns (address[] memory) {
+        return blackListedUsers;
+    }
+
+    /**
+     * @notice Emergency stop contract in a case of a critical security flaw.
+     */
+    function destroy() public onlyOwner {
+        selfdestruct(payable(owner()));
     }
 }
