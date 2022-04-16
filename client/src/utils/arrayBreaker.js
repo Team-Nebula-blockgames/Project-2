@@ -1,9 +1,13 @@
 function arrayBreaker(files, size) {
   const bigArray = [];
-  while (files.length) {
-    var mini = files.splice(0, size);
+  let batches = Math.ceil(files.length / size);
+
+  for (let i = 0; i < batches; i++) {
+    var mini = files.slice(i * size, i * size + size);
+    console.log(mini);
     bigArray.push(mini);
   }
+
   return bigArray;
 }
 

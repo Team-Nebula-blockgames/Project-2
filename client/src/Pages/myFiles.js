@@ -6,12 +6,13 @@ import github from "../icons/github.svg";
 import logo from "../icons/logo.svg";
 import upload from "../icons/upload.svg";
 import addressShortner from "../utils/addressShortener";
-import Input from "../Components/input";
 import GridBox from "../Components/gridBox";
 import Share from "../Components/share";
 import UploadForm from "../Components/uploadForm";
 import UploadSuccesful from "../Components/uploadSuccesful";
 import arrayBreaker from "../utils/arrayBreaker";
+import MenuItem from "@mui/material/MenuItem";
+import Menu from "@mui/material/Menu";
 
 function Home(props) {
   const {
@@ -22,191 +23,49 @@ function Home(props) {
     userPrivateFiles,
     userRecievedFiles,
     contractMethods,
+    addFile,
   } = props;
+  const allFiles = [
+    ...userPublicFiles,
+    ...userPrivateFiles,
+    ...userRecievedFiles,
+  ];
+
   const [uploadModal, setUploadModal] = useState(false);
   const [shareModal, setShareModal] = useState(false);
   const [page, setPage] = useState(0);
   const [succesModal, setSuccesModal] = useState(false);
+  const [fileToShare, setFileToShare] = useState({});
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [selectedIndex, setSelectedIndex] = useState(3);
+  const [displayedFiles, setDisplayedFiles] = useState(allFiles);
 
-  const files = [
-    {
-      name: "Seun",
-      description: "A cool and fit blockchain dev",
-      access: "public",
-    },
-    {
-      name: "Seun",
-      description: "A cool and fit blockchain dev",
-      access: "public",
-    },
-    {
-      name: "Seun",
-      description: "A cool and fit blockchain dev",
-      access: "public",
-    },
-    {
-      name: "Seun",
-      description: "A cool and fit blockchain dev",
-      access: "public",
-    },
-    {
-      name: "Seun",
-      description: "A cool and fit blockchain dev",
-      access: "private",
-    },
-    {
-      name: "Seun",
-      description: "A cool and fit blockchain dev",
-      access: "public",
-    },
-    {
-      name: "Seun",
-      description: "A cool and fit blockchain dev",
-      access: "public",
-    },
-    {
-      name: "Seun",
-      description: "A cool and fit blockchain dev",
-      access: "public",
-    },
-    {
-      name: "Seun",
-      description: "A cool and fit blockchain dev",
-      access: "public",
-    },
-    {
-      name: "Seun",
-      description: "A cool and fit blockchain dev",
-      access: "public",
-    },
-    {
-      name: "Seun",
-      description: "A cool and fit blockchain dev",
-      access: "public",
-    },
-    {
-      name: "Seun",
-      description: "A cool and fit blockchain dev",
-      access: "private",
-    },
-    {
-      name: "Seun",
-      description: "A cool and fit blockchain dev",
-      access: "public",
-    },
-    {
-      name: "Seun",
-      description: "A cool and fit blockchain dev",
-      access: "public",
-    },
-    {
-      name: "Seun",
-      description: "A cool and fit blockchain dev",
-      access: "public",
-    },
-    {
-      name: "Seun",
-      description: "A cool and fit blockchain dev",
-      access: "public",
-    },
-    {
-      name: "Seun",
-      description: "A cool and fit blockchain dev",
-      access: "public",
-    },
-    {
-      name: "Seun",
-      description: "A cool and fit blockchain dev",
-      access: "public",
-    },
-    {
-      name: "Seun",
-      description: "A cool and fit blockchain dev",
-      access: "private",
-    },
-    {
-      name: "Seun",
-      description: "A cool and fit blockchain dev",
-      access: "public",
-    },
-    {
-      name: "Seun",
-      description: "A cool and fit blockchain dev",
-      access: "public",
-    },
-    {
-      name: "Seun",
-      description: "A cool and fit blockchain dev",
-      access: "public",
-    },
-    {
-      name: "Seun",
-      description: "A cool and fit blockchain dev",
-      access: "public",
-    },
-    {
-      name: "Seun",
-      description: "A cool and fit blockchain dev",
-      access: "public",
-    },
-    {
-      name: "Seun",
-      description: "A cool and fit blockchain dev",
-      access: "public",
-    },
-    {
-      name: "Seun",
-      description: "A cool and fit blockchain dev",
-      access: "private",
-    },
-    {
-      name: "Seun",
-      description: "A cool and fit blockchain dev",
-      access: "public",
-    },
-    {
-      name: "Seun",
-      description: "A cool and fit blockchain dev",
-      access: "public",
-    },
-    {
-      name: "Seun",
-      description: "A cool and fit blockchain dev",
-      access: "public",
-    },
-    {
-      name: "Seun",
-      description: "A cool and fit blockchain dev",
-      access: "public",
-    },
-    {
-      name: "Seun",
-      description: "A cool and fit blockchain dev",
-      access: "public",
-    },
-    {
-      name: "Seun",
-      description: "A cool and fit blockchain dev",
-      access: "public",
-    },
-    {
-      name: "Seun",
-      description: "A cool and fit blockchain dev",
-      access: "private",
-    },
-    {
-      name: "Seun",
-      description: "A cool and fit blockchain dev",
-      access: "public",
-    },
-    {
-      name: "Seun",
-      description: "A cool and fit blockchain dev",
-      access: "public",
-    },
-  ];
+  const open = Boolean(anchorEl);
+  const handleClickListItem = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
 
-  const fileStorage = arrayBreaker(files, 12);
+  const handleMenuItemClick = (event, index) => {
+    setSelectedIndex(index);
+    setAnchorEl(null);
+    if (index === 0) {
+      setDisplayedFiles(userPublicFiles);
+    } else if (index === 1) {
+      setDisplayedFiles(userPrivateFiles);
+    } else if (index === 2) {
+      setDisplayedFiles(userRecievedFiles);
+    } else {
+      setDisplayedFiles(allFiles);
+    }
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const options = ["Public", "Private", "Recieved", "All Files"];
+
+  const fileStorage = arrayBreaker(displayedFiles, 12);
 
   return (
     <Box
@@ -401,7 +260,45 @@ function Home(props) {
               style={{ width: "15.5px", height: "10.5px" }}
             />
           </Button>
-          <Input />
+          <Button
+            component="nav"
+            sx={{
+              padding: "8px 8px 8px 16px",
+              width: "231px",
+              height: "50px",
+              border: "1px solid #AAAAAA",
+              boxSizing: "border-box",
+              borderRadius: "8px",
+              margin: "0 10px",
+              position: "relative",
+              fontWeight: 700,
+              fontSize: "18px",
+              color: "white",
+            }}
+            onClick={handleClickListItem}
+          >
+            {options[selectedIndex]}
+          </Button>
+          <Menu
+            id="lock-menu"
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleClose}
+            MenuListProps={{
+              "aria-labelledby": "lock-button",
+              role: "listbox",
+            }}
+          >
+            {options.map((option, index) => (
+              <MenuItem
+                key={index}
+                selected={index === selectedIndex}
+                onClick={(event) => handleMenuItemClick(event, index)}
+              >
+                {option}
+              </MenuItem>
+            ))}
+          </Menu>
         </Box>
       </Box>
       <Box
@@ -413,7 +310,12 @@ function Home(props) {
         {fileStorage.map((item, index) => {
           return (
             page === index && (
-              <GridBox files={item} setShareModal={setShareModal} />
+              <GridBox
+                key={index}
+                files={item}
+                setShareModal={setShareModal}
+                setFileToShare={setFileToShare}
+              />
             )
           );
         })}
@@ -450,14 +352,16 @@ function Home(props) {
               </Box>
             );
           })}
-          <Typography
-            sx={{
-              fontWeight: 500,
-              fontSize: "16px",
-              lineHeight: "19px",
-              color: "#FFFFFF",
-            }}
-          >{`${page + 1} of ${fileStorage.length}`}</Typography>
+          {displayedFiles.length >= 12 && (
+            <Typography
+              sx={{
+                fontWeight: 500,
+                fontSize: "16px",
+                lineHeight: "19px",
+                color: "#FFFFFF",
+              }}
+            >{`${page + 1} of ${fileStorage.length}`}</Typography>
+          )}
         </Box>
       </Box>
       <Box
@@ -499,15 +403,18 @@ function Home(props) {
         <UploadForm
           setUploadModal={setUploadModal}
           contractMethods={contractMethods}
+          setSuccesModal={setSuccesModal}
+          addFile={addFile}
         />
       )}
       {shareModal && (
         <Share
           setShareModal={setShareModal}
           contractMethods={contractMethods}
+          file={fileToShare}
         />
       )}
-      {succesModal && <UploadSuccesful setSuccesModal={setSuccesModal} />}
+      {succesModal && <UploadSuccesful />}
     </Box>
   );
 }

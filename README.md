@@ -1,19 +1,21 @@
 # UpBox
+
 This is a decentralized library where users can upload files and retrieve files, share files with other users , using their wallet address.
 
-The supported File types are: 
+The supported File types are:
+
 - Articles
 - Books
 
 Default permission for uploading file is public
 
-
+View Upbox contract on [etherscan](0x5797ff9d5C1Ca21f28E6E54d4b1A3261856863e5)
 
 # Contribution Guide
 
 - When adding new contracts contract name and contract file name should be same.
 - All functions should have explicit comment (and test)
-- 
+-
 
 # Folder Structure
 
@@ -21,9 +23,10 @@ The Project is divided into two part, The Client (frontend) and the Smart Contra
 
 The client folder is the folder for the react frontend app calling the contracts. The client/contracts directory contains the compiled contracts for the react front end application.
 
-
 Editing the clients folder
+
 # Steps
+
 - Create a .env file with the following variables
 
 1. CONTRACT_NAMES = names of the contract that should be copied to the react app directory seperated by commas.
@@ -40,20 +43,4 @@ npm run deploy (to run deploy script on localhost)
 npm run compile (to complie contracts and copy contract ABI to the client/contracts folder )
 npm run deploy-rinkeby (to run deploy script on rinkeby testnet)
 npm run test (to run contract test)
-```
-
-# Etherscan verification
-
-To try out Etherscan verification, you first need to deploy a contract to an Ethereum network that's supported by Etherscan, such as Ropsten.
-
-In this project, copy the .env.example file to a file named .env, and then edit it to fill in the details. Enter your Etherscan API key, your Ropsten node URL (eg from Alchemy), and the private key of the account which will send the deployment transaction. With a valid .env file in place, first deploy your contract:
-
-```shell
-hardhat run --network ropsten scripts/deploy.js
-```
-
-Then, copy the deployment address and paste it in to replace `DEPLOYED_CONTRACT_ADDRESS` in this command:
-
-```shell
-npx hardhat verify --network ropsten DEPLOYED_CONTRACT_ADDRESS "Hello, Hardhat!"
 ```

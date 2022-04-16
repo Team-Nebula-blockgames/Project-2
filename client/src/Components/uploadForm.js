@@ -6,10 +6,9 @@ import uploadGrey from "../icons/uploadGrey.svg";
 import Input2 from "./input2";
 import { Web3Storage } from "web3.storage";
 import linkCreator from "../utils/linkCreator";
-import validateMetaData from "../utils/validateMetaData";
 
 function UploadForm(props) {
-  const { setUploadModal, contractMethods, setSuccesModal } = props;
+  const { setUploadModal, contractMethods, setSuccesModal, addFile } = props;
   const [privateFile, setPrivateFile] = useState(false);
   const [files, setFiles] = useState("Upload file");
   const [description, setDiscription] = useState("");
@@ -24,6 +23,7 @@ function UploadForm(props) {
       name: files[0].name,
       url: link,
       description: description,
+      access: privateFile ? "private" : "public",
     };
     const fileToUpload = JSON.stringify(file);
     contractMethods.uploadFile(fileToUpload, privateFile).then(() => {
@@ -202,7 +202,7 @@ function UploadForm(props) {
           }}
           onClick={() => {
             if (files !== "Upload file") {
-              storeFiles().then(() => console.log("file uploaded"));
+              storeFiles().then(() => setUploadModal(false));
             }
           }}
         >

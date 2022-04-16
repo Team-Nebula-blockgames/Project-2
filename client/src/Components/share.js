@@ -1,10 +1,14 @@
+import { useState } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import InputAddress from "./inputAddress";
+import twitter from "../icons/twitter.svg";
+import whatsapp from "../icons/whatsapp.svg";
 
 function Share(props) {
-  const { setShareModal } = props;
+  const { setShareModal, file, contractMethods } = props;
+  const [address, setAddress] = useState("");
 
   return (
     <Box
@@ -29,12 +33,13 @@ function Share(props) {
       <Box
         sx={{
           width: "62.62%",
-          height: "367px",
+          height: "397px",
           background: "#333333",
           borderRadius: "16px",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
+          position: "relative",
         }}
         onClick={(e) => {
           e.stopPropagation();
@@ -63,7 +68,7 @@ function Share(props) {
           >
             Share with
           </Typography>
-          <InputAddress />
+          <InputAddress setText={setAddress} />
         </Box>
         <Box sx={{ width: "446px" }}>
           <Button
@@ -87,6 +92,40 @@ function Share(props) {
           >
             Approve
           </Button>
+        </Box>
+        <Box
+          sx={{
+            position: "absolute",
+            bottom: 0,
+            right: 0,
+            display: "flex",
+            width: "80px",
+            justifyContent: "space-between",
+            marginRight: "10px",
+          }}
+        >
+          <a
+            href={`https://api.whatsapp.com/send?text=${file.name}:%20${file.url}`}
+            rel="noreferrer noopener"
+            target="_blank"
+          >
+            <img
+              src={whatsapp}
+              alt="whatsapp icon"
+              style={{ width: "30px", height: "30px" }}
+            />
+          </a>
+          <a
+            href={`https://twitter.com/intent/tweet?text=${file.name}:%20${file.url}`}
+            rel="noreferrer noopener"
+            target="_blank"
+          >
+            <img
+              src={twitter}
+              alt="twitter icon"
+              style={{ width: "30px", height: "30px" }}
+            />
+          </a>
         </Box>
       </Box>
     </Box>
