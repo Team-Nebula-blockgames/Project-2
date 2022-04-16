@@ -13,6 +13,7 @@ contract Upbox is ERC721, Ownable {
 
     mapping(uint256 => string) private tokenIdtoMetadata;
     uint256[] public publicTokensIds;
+    address[] public blacklistedUsers;
     mapping(address => UserTokens) internal userTokens;
 
     struct UserTokens {
@@ -62,15 +63,16 @@ contract Upbox is ERC721, Ownable {
     }
 
     // all tokens in system
-    
-    
-    
-    
+
     function getMyPublicTokens() public view returns (uint256[] memory) {
         return userTokens[msg.sender]._publicTokens;
     }
 
     function getMyPrivateTokens() public view returns (uint256[] memory) {
         return userTokens[msg.sender]._privateTokens;
+    }
+
+    function blacklistUser(address user) public {
+        blacklistedUsers.push(user);
     }
 }
