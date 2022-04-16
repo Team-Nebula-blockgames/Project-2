@@ -209,7 +209,7 @@ describe("Upbox Contract 💢", function () {
     };
 
     //Assert
-    expect(await tryGetTokenUri()).to.be.rejectedWith(
+    expect(tryGetTokenUri()).to.be.rejectedWith(
       "VM Exception while processing transaction: reverted with reason string 'Upbox: Token does not exist.'"
     );
   });
@@ -279,7 +279,7 @@ describe("Upbox Contract 💢", function () {
     };
 
     //Assert
-    expect(await tryUploadFile()).to.be.rejectedWith(
+    expect(tryUploadFile()).to.be.rejectedWith(
       "Error: VM Exception while processing transaction: reverted with reason string 'Upbox: You are blacklisted.'"
     );
   });
@@ -288,31 +288,51 @@ describe("Upbox Contract 💢", function () {
     //Arrange
     let metaData = JSON.stringify({ game: "name" });
     let isPrivate = false;
-    let userOneUploads = 3;
-    let userTwoUploads = 3;
+    let userUploads = 5;
 
     //Act
-    for (let i = 0; i < userOneUploads; i++) {
-      //loop for userOneUploads
+    for (let i = 0; i < userUploads; i++) {
+      //loop for userUploads
       let uploadPublicTx = await upboxContract
         .connect(accounts[1])
         .uploadFile(metaData, isPrivate);
       await uploadPublicTx.wait();
     }
-    for (let i = 0; i < userTwoUploads; i++) {
-      //loop for userOTwoUploads
-      let uploadPublicTx = await upboxContract
-        .connect(accounts[2])
-        .uploadFile(metaData, isPrivate);
-      await uploadPublicTx.wait();
-    }
+    const txn = await upboxContract.removePublicTokens(2); //remove one of the added public files;
+    await txn.wait();
 
     //Assert
     const allTokens = await upboxContract.getAllPublicTokens();
     assert.equal(
       allTokens.length,
-      userOneUploads + userTwoUploads,
-      "Could not upload a public file!"
+      userUploads - 1,
+      "Could not remove a public file!"
+    );
+  });
+
+  it("Should throw an error for non existing files", async function () {
+    //Arrange
+    let metaData = JSON.stringify({ game: "name" });
+    let isPrivate = false;
+    let userUploads = 5;
+    let nonExistingFile = 100;
+
+    //Act
+    for (let i = 0; i < userUploads; i++) {
+      //loop for userUploads
+      let uploadPublicTx = await upboxContract
+        .connect(accounts[1])
+        .uploadFile(metaData, isPrivate);
+      await uploadPublicTx.wait();
+    }
+    const tryRemoveFile = async () => {
+      const txn = await upboxContract.removePublicTokens(nonExistingFile); //remove a public file that does not exist;
+      await txn.wait();
+    };
+
+    //Assert
+    expect(tryRemoveFile()).to.be.rejectedWith(
+      "Error: VM Exception while processing transaction: reverted with reason string 'Upbox: Out of bound.'"
     );
   });
 });

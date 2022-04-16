@@ -107,7 +107,6 @@ contract Upbox is ERC721, Ownable {
 
     // remove public tokens _index = 0,1...
     function removePublicTokens(uint256 _index) public onlyOwner {
-        // delete publicTokensIds[tokenId];
         require(_index < publicTokensIds.length, "Upbox: Out of bound.");
         for (uint256 i = _index; i < publicTokensIds.length - 1; i++) {
             publicTokensIds[i] = publicTokensIds[i + 1];
