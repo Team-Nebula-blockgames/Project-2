@@ -123,7 +123,7 @@ contract Upbox is ERC721, Ownable {
     }
     
     // getblack listed users
-    function getblackListedUser() public view returns (address[] memory) {
+    function getblackListedUsers() public view returns (address[] memory) {
         return blackListedUsers;
     }
 

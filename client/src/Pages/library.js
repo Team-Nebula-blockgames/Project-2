@@ -256,6 +256,7 @@ function Library(props) {
           {fileStorage.map((item, index) => {
             return (
               <Box
+                key={index}
                 sx={{
                   background: page === index ? "#444444" : "#737373",
                   border: "1px solid #AAAAAA",

@@ -25,20 +25,20 @@ function Home(props) {
     contractMethods,
     addFile,
   } = props;
+  const allFiles = [
+    ...userPublicFiles,
+    ...userPrivateFiles,
+    ...userRecievedFiles,
+  ];
+
   const [uploadModal, setUploadModal] = useState(false);
   const [shareModal, setShareModal] = useState(false);
   const [page, setPage] = useState(0);
   const [succesModal, setSuccesModal] = useState(false);
   const [fileToShare, setFileToShare] = useState({});
   const [anchorEl, setAnchorEl] = useState(null);
-  const [selectedIndex, setSelectedIndex] = useState(1);
-  const [displayedFiles, setDisplayedFiles] = useState([]);
-
-  const allFiles = [
-    ...userPublicFiles,
-    ...userPrivateFiles,
-    ...userRecievedFiles,
-  ];
+  const [selectedIndex, setSelectedIndex] = useState(3);
+  const [displayedFiles, setDisplayedFiles] = useState(allFiles);
 
   const open = Boolean(anchorEl);
   const handleClickListItem = (event) => {
@@ -291,7 +291,7 @@ function Home(props) {
           >
             {options.map((option, index) => (
               <MenuItem
-                key={option}
+                key={index}
                 selected={index === selectedIndex}
                 onClick={(event) => handleMenuItemClick(event, index)}
               >

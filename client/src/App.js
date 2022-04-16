@@ -53,14 +53,16 @@ function App() {
         Nebula.abi,
         provider
       );
-      console.log(nebulaContract);
-      const name = await nebulaContract.name();
-      console.log(name);
+
+      nebulaContract.on("FileUploaded", () => {
+        console.log("Uploaded a File");
+      });
+
       const allPublicTokens = await nebulaContract.getAllPublicTokens();
       const myPublicTokens = await nebulaContract.getMyPublicTokens();
       const myPrivateTokens = await nebulaContract.getMyPrivateTokens();
       const myRecievedTokens = await nebulaContract.getMyRecievedTokens();
-      const blacklistedUsers = await nebulaContract.getBlacklistedUsers();
+      const blacklistedUsers = await nebulaContract.getblackListedUsers();
 
       console.log("all pubic tokens: ", allPublicTokens);
       const getFileData = async (tokens) => {
@@ -74,9 +76,7 @@ function App() {
             })
             .then((resp) => {
               console.log("fileData: ", resp);
-              if (validateMetaData(resp)) {
-                data.push(resp);
-              }
+              data.push(resp);
             });
         }
         return data;

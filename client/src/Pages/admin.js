@@ -110,7 +110,7 @@ function Admin(props) {
             }}
             onClick={async () => {
               if (utils.isAddress(blacklistAddress))
-                await contractMethods.blacklist(blacklistAddress);
+                await contractMethods.addblackListedUser(blacklistAddress);
             }}
           >
             Blacklist
