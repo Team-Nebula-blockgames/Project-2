@@ -4,7 +4,7 @@ This project demonstrates an advanced Hardhat use case, integrating other tools 
 
 The project comes with a sample contract, a test for that contract, a sample script that deploys that contract, and an example of a task implementation, which simply lists the available accounts. It also comes with a variety of other tools, preconfigured to work with the project code.
 
-N/B: When adding new contracts contract name and contract file name should be same.
+View Upbox contract on [etherscan](0x5797ff9d5C1Ca21f28E6E54d4b1A3261856863e5)
 
 # Client folder
 
@@ -28,20 +28,4 @@ npm run deploy (to run deploy script on localhost)
 npm run compile (to complie contracts and copy contract ABI to the client/contracts folder )
 npm run deploy-rinkeby (to run deploy script on rinkeby testnet)
 npm run test (to run contract test)
-```
-
-# Etherscan verification
-
-To try out Etherscan verification, you first need to deploy a contract to an Ethereum network that's supported by Etherscan, such as Ropsten.
-
-In this project, copy the .env.example file to a file named .env, and then edit it to fill in the details. Enter your Etherscan API key, your Ropsten node URL (eg from Alchemy), and the private key of the account which will send the deployment transaction. With a valid .env file in place, first deploy your contract:
-
-```shell
-hardhat run --network ropsten scripts/deploy.js
-```
-
-Then, copy the deployment address and paste it in to replace `DEPLOYED_CONTRACT_ADDRESS` in this command:
-
-```shell
-npx hardhat verify --network ropsten DEPLOYED_CONTRACT_ADDRESS "Hello, Hardhat!"
 ```
