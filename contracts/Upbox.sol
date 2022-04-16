@@ -12,7 +12,7 @@ contract Upbox is ERC721, Ownable {
 
     Counters.Counter private _tokenIds;
     uint256[] public publicTokensIds;
-    address[] public blackListedUsers;
+    mapping(address => bool) public blackListedUsers;
     mapping(uint256 => string) private tokenIdtoMetadata;
     mapping(address => UserTokens) internal userTokens;
 
@@ -31,7 +31,10 @@ contract Upbox is ERC721, Ownable {
     @notice Uploads a new file
     @param _isPrivate privacy of uploaded file
      */
-    function uploadFile(string memory input, bool _isPrivate) public {
+    function uploadFile(string memory input, bool _isPrivate)
+        public
+        whenNotBlacklisted
+    {
         // use tokenCounter as an id for each created token
         // use _safeMint inherited from ERC721 contract to mint a token
 
@@ -55,7 +58,7 @@ contract Upbox is ERC721, Ownable {
         override(ERC721)
         returns (string memory)
     {
-        require(ownerOf(tokenId) != address(0), "Token does not exist.");
+        require(ownerOf(tokenId) != address(0), "Upbox: Token does not exist.");
         string memory metadata = tokenIdtoMetadata[tokenId];
         bytes memory jsonBytes = bytes(string(abi.encodePacked(metadata)));
         string memory jsonString = jsonBytes.encode();
@@ -105,7 +108,7 @@ contract Upbox is ERC721, Ownable {
     // remove public tokens _index = 0,1...
     function removePublicTokens(uint256 _index) public onlyOwner {
         // delete publicTokensIds[tokenId];
-        require(_index < publicTokensIds.length, "out of bound");
+        require(_index < publicTokensIds.length, "Upbox: Out of bound.");
         for (uint256 i = _index; i < publicTokensIds.length - 1; i++) {
             publicTokensIds[i] = publicTokensIds[i + 1];
         }
@@ -113,17 +116,19 @@ contract Upbox is ERC721, Ownable {
     }
 
     /** 
-    @dev blacklists an address.
     @notice This function adds an address to our blacklisted addresses
     @param _userAddress the address to be blacklisted
     */
     function addblackListedUser(address _userAddress) public onlyOwner {
-        blackListedUsers.push(_userAddress);
+        blackListedUsers[_userAddress] = true;
     }
 
-    // getblack listed users
-    function getblackListedUsers() public view returns (address[] memory) {
-        return blackListedUsers;
+    /** 
+    @notice This function blackklists an address.
+    @param _userAddress the address to be remove from blacklist.
+    */
+    function removeUserFromblackList(address _userAddress) public onlyOwner {
+        blackListedUsers[_userAddress] = false;
     }
 
     /**
@@ -131,5 +136,10 @@ contract Upbox is ERC721, Ownable {
      */
     function destroy() public onlyOwner {
         selfdestruct(payable(owner()));
+    }
+
+    modifier whenNotBlacklisted() {
+        require(!blackListedUsers[msg.sender], "Upbox: You are blacklisted.");
+        _;
     }
 }

@@ -62,7 +62,10 @@ function App() {
       const myPublicTokens = await nebulaContract.getMyPublicTokens();
       const myPrivateTokens = await nebulaContract.getMyPrivateTokens();
       const myRecievedTokens = await nebulaContract.getMyRecievedTokens();
-      const blacklistedUsers = await nebulaContract.getblackListedUsers();
+
+      console.log("allPublicTokens: ", allPublicTokens);
+      console.log("UserPublicTokens: ", myPublicTokens);
+      console.log("userPrivateTokens: ", myPrivateTokens);
 
       const getFileData = async (tokens) => {
         const data = [];
@@ -73,6 +76,7 @@ function App() {
               return resp.json();
             })
             .then((resp) => {
+              console.log(resp);
               data.push(resp);
             });
         }
@@ -86,6 +90,7 @@ function App() {
 
       console.log("allPublic: ", allPublic);
       console.log("UserPublic: ", userPublic);
+      console.log("userPrivate: ", userPrivate);
 
       setPublicFiles(allPublic);
       setUserPublicFiles(userPublic);
@@ -94,7 +99,8 @@ function App() {
 
       setContractMethods(nebulaContract.connect(signer));
       setAddress(address);
-      if (blacklistedUsers.includes(address)) setView("blacklisetd");
+      // const blackListed = await nebulaContract.blackListedUsers(address);
+      // if (blackListed) setView("blacklisetd");
       const Admin = await nebulaContract.owner();
       if (address === Admin) setView("admin");
       setLoader(false);

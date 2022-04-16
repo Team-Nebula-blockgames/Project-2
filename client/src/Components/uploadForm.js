@@ -26,7 +26,6 @@ function UploadForm(props) {
       access: privateFile ? "private" : "public",
     };
     const fileToUpload = JSON.stringify(file);
-    addFile(file);
     contractMethods.uploadFile(fileToUpload, privateFile).then(() => {
       setSuccesModal(true);
       setTimeout(() => {
