@@ -203,7 +203,7 @@ function UploadForm(props) {
           }}
           onClick={() => {
             if (files !== "Upload file") {
-              storeFiles().then(() => console.log("file uploaded"));
+              storeFiles().then(() => setUploadModal(false));
             }
           }}
         >

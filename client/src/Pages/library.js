@@ -14,14 +14,8 @@ import UploadSuccesful from "../Components/uploadSuccesful";
 import arrayBreaker from "../utils/arrayBreaker";
 
 function Library(props) {
-  const {
-    address,
-    initialize,
-    setView,
-    publicFiles,
-    contractMethods,
-    addFile,
-  } = props;
+  const { address, setView, publicFiles, contractMethods, addFile } = props;
+  console.log(publicFiles);
   const [uploadModal, setUploadModal] = useState(false);
   const [shareModal, setShareModal] = useState(false);
   const [page, setPage] = useState(0);
@@ -144,13 +138,6 @@ function Library(props) {
               fontSize: "18px",
               lineHeight: "20px",
               color: "#B973FF",
-            }}
-            onClick={async () => {
-              console.log("Getting Data");
-              console.log(address);
-              //checks if the user has already connected and connects if not
-              if (address === "Connect Wallet") await initialize();
-              console.log(address);
             }}
           >
             {/* addresShortner returns a shortened version of an address */}
@@ -278,14 +265,16 @@ function Library(props) {
               </Box>
             );
           })}
-          <Typography
-            sx={{
-              fontWeight: 500,
-              fontSize: "16px",
-              lineHeight: "19px",
-              color: "#FFFFFF",
-            }}
-          >{`${page + 1} of ${fileStorage.length}`}</Typography>
+          {publicFiles.length >= 12 && (
+            <Typography
+              sx={{
+                fontWeight: 500,
+                fontSize: "16px",
+                lineHeight: "19px",
+                color: "#FFFFFF",
+              }}
+            >{`${page + 1} of ${fileStorage.length}`}</Typography>
+          )}
         </Box>
       </Box>
       <Box

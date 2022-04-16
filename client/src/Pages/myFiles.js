@@ -352,7 +352,7 @@ function Home(props) {
               </Box>
             );
           })}
-          {fileStorage.length > 0 && (
+          {displayedFiles.length >= 12 && (
             <Typography
               sx={{
                 fontWeight: 500,

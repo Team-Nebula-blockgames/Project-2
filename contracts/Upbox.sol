@@ -15,7 +15,6 @@ contract Upbox is ERC721, Ownable {
     address[] public blackListedUsers;
     mapping(uint256 => string) private tokenIdtoMetadata;
     mapping(address => UserTokens) internal userTokens;
-    address admin;
 
     struct UserTokens {
         uint256[] _publicTokens;
@@ -23,8 +22,8 @@ contract Upbox is ERC721, Ownable {
         uint256[] _receivedTokens;
     }
 
-    event FileUploaded(address _user, uint _tokenId);
-    event FileShared(address _to, uint _tokenId);
+    event FileUploaded(address _user, uint256 _tokenId);
+    event FileShared(address _to, uint256 _tokenId);
 
     constructor() ERC721("Upbox", "BOX") {}
 
@@ -121,7 +120,7 @@ contract Upbox is ERC721, Ownable {
     function addblackListedUser(address _userAddress) public onlyOwner {
         blackListedUsers.push(_userAddress);
     }
-    
+
     // getblack listed users
     function getblackListedUsers() public view returns (address[] memory) {
         return blackListedUsers;
@@ -132,10 +131,5 @@ contract Upbox is ERC721, Ownable {
      */
     function destroy() public onlyOwner {
         selfdestruct(payable(owner()));
-    }
-
-    function isAdmin() public view returns (bool) {
-        if (msg.sender == admin) return true;
-        else return false;
     }
 }
