@@ -24,7 +24,43 @@ contract Upbox is ERC721, Ownable {
 
     constructor() ERC721("Upbox", "UBX") {}
 
-    //austin add the tokenUri and uploadfile function
+    /**
+    @notice Uploads a new file
+    @param _isPrivate privacy of uploaded file
+     */
+    function uploadFile(string memory input, bool _isPrivate) public {
+        // use tokenCounter as an id for each created token
+        // use _safeMint inherited from ERC721 contract to mint a token
+
+        _tokenIds.increment();
+        uint256 newItemId = _tokenIds.current();
+        tokenIdtoMetadata[newItemId] = input;
+        _safeMint(msg.sender, newItemId);
+        if (_isPrivate) {
+            userTokens[msg.sender]._privateTokens.push(newItemId);
+        } else {
+            userTokens[msg.sender]._publicTokens.push(newItemId);
+            publicTokensIds.push(newItemId);
+        }
+    }
+
+    /// @dev Encodes the files metadata as JSON.
+    function tokenURI(uint256 tokenId)
+        public
+        view
+        override(ERC721)
+        returns (string memory)
+    {
+        require(ownerOf(tokenId) != address(0), "Token does not exist.");
+        string memory metadata = tokenIdtoMetadata[tokenId];
+        bytes memory jsonBytes = bytes(string(abi.encodePacked(metadata)));
+        string memory jsonString = jsonBytes.encode();
+
+        return
+            string(
+                abi.encodePacked("data:application/json;base64,", jsonString)
+            );
+    }
 
     // share tokens
     function shareToken(address to, uint256 idd) public {
