@@ -8,9 +8,18 @@ import upload from "../icons/upload.svg";
 import addressShortner from "../utils/addressShortener";
 import UploadForm from "../Components/uploadForm";
 import UploadSuccesful from "../Components/uploadSuccesful";
+import WrongNetwork from "../Components/wrongNetwork";
 
 function Home(props) {
-  const { address, initialize, setView, contractMethods } = props;
+  const {
+    address,
+    initialize,
+    setView,
+    contractMethods,
+    addFile,
+    network,
+    networkModal,
+  } = props;
   const [uploadModal, setUploadModal] = useState(false);
   const [succesModal, setSuccesModal] = useState(false);
 
@@ -255,6 +264,17 @@ function Home(props) {
           </Box>
         )}
       </Button>
+      {!network && (
+        <Typography
+          sx={{
+            height: "15px",
+            color: "white",
+            marginTop: "5px",
+          }}
+        >
+          Please connect to rinkeby Network
+        </Typography>
+      )}
       <Box
         sx={{
           position: "fixed",
@@ -294,9 +314,12 @@ function Home(props) {
         <UploadForm
           setUploadModal={setUploadModal}
           contractMethods={contractMethods}
+          setSuccesModal={setSuccesModal}
+          addFile={addFile}
         />
       )}
-      {succesModal && <UploadSuccesful setSuccesModal={setSuccesModal} />}
+      {succesModal && <UploadSuccesful />}
+      {networkModal && <WrongNetwork network={network} />}
     </Box>
   );
 }

@@ -2,7 +2,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 
 function Card(props) {
-  const { name, description, access, setShareModal } = props;
+  const { item, setShareModal, setFileToShare } = props;
 
   return (
     <Box
@@ -38,7 +38,7 @@ function Card(props) {
             color: "#FFFFFF",
           }}
         >
-          {name}
+          {item.name}
         </Typography>
         <Typography
           sx={{
@@ -48,7 +48,7 @@ function Card(props) {
             color: "#AAAAAA",
           }}
         >
-          {description}
+          {item.description}
         </Typography>
         <Box
           sx={{
@@ -69,10 +69,10 @@ function Card(props) {
               fontWeight: 700,
               fontSize: "12px",
               lineHeight: "15px",
-              color: access === "public" ? "#000000" : "#B973FF",
+              color: item.access === "public" ? "#000000" : "#B973FF",
             }}
           >
-            {access}
+            {item.access}
           </Typography>
           <Typography
             sx={{
@@ -82,7 +82,10 @@ function Card(props) {
               color: "#CCCCCC",
               cursor: "pointer",
             }}
-            onClick={() => setShareModal(true)}
+            onClick={() => {
+              setFileToShare(item);
+              setShareModal(true);
+            }}
           >
             Share
           </Typography>

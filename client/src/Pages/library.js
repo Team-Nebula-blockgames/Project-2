@@ -14,191 +14,21 @@ import UploadSuccesful from "../Components/uploadSuccesful";
 import arrayBreaker from "../utils/arrayBreaker";
 
 function Library(props) {
-  const { address, initialize, setView, publicFiles, contractMethods } = props;
+  const {
+    address,
+    initialize,
+    setView,
+    publicFiles,
+    contractMethods,
+    addFile,
+  } = props;
   const [uploadModal, setUploadModal] = useState(false);
   const [shareModal, setShareModal] = useState(false);
   const [page, setPage] = useState(0);
   const [succesModal, setSuccesModal] = useState(false);
+  const [fileToShare, setFileToShare] = useState({});
 
-  const files = [
-    {
-      name: "Seun",
-      description: "A cool and fit blockchain dev",
-      access: "public",
-    },
-    {
-      name: "Seun",
-      description: "A cool and fit blockchain dev",
-      access: "public",
-    },
-    {
-      name: "Seun",
-      description: "A cool and fit blockchain dev",
-      access: "public",
-    },
-    {
-      name: "Seun",
-      description: "A cool and fit blockchain dev",
-      access: "public",
-    },
-    {
-      name: "Seun",
-      description: "A cool and fit blockchain dev",
-      access: "private",
-    },
-    {
-      name: "Seun",
-      description: "A cool and fit blockchain dev",
-      access: "public",
-    },
-    {
-      name: "Seun",
-      description: "A cool and fit blockchain dev",
-      access: "public",
-    },
-    {
-      name: "Seun",
-      description: "A cool and fit blockchain dev",
-      access: "public",
-    },
-    {
-      name: "Seun",
-      description: "A cool and fit blockchain dev",
-      access: "public",
-    },
-    {
-      name: "Seun",
-      description: "A cool and fit blockchain dev",
-      access: "public",
-    },
-    {
-      name: "Seun",
-      description: "A cool and fit blockchain dev",
-      access: "public",
-    },
-    {
-      name: "Seun",
-      description: "A cool and fit blockchain dev",
-      access: "private",
-    },
-    {
-      name: "Seun",
-      description: "A cool and fit blockchain dev",
-      access: "public",
-    },
-    {
-      name: "Seun",
-      description: "A cool and fit blockchain dev",
-      access: "public",
-    },
-    {
-      name: "Seun",
-      description: "A cool and fit blockchain dev",
-      access: "public",
-    },
-    {
-      name: "Seun",
-      description: "A cool and fit blockchain dev",
-      access: "public",
-    },
-    {
-      name: "Seun",
-      description: "A cool and fit blockchain dev",
-      access: "public",
-    },
-    {
-      name: "Seun",
-      description: "A cool and fit blockchain dev",
-      access: "public",
-    },
-    {
-      name: "Seun",
-      description: "A cool and fit blockchain dev",
-      access: "private",
-    },
-    {
-      name: "Seun",
-      description: "A cool and fit blockchain dev",
-      access: "public",
-    },
-    {
-      name: "Seun",
-      description: "A cool and fit blockchain dev",
-      access: "public",
-    },
-    {
-      name: "Seun",
-      description: "A cool and fit blockchain dev",
-      access: "public",
-    },
-    {
-      name: "Seun",
-      description: "A cool and fit blockchain dev",
-      access: "public",
-    },
-    {
-      name: "Seun",
-      description: "A cool and fit blockchain dev",
-      access: "public",
-    },
-    {
-      name: "Seun",
-      description: "A cool and fit blockchain dev",
-      access: "public",
-    },
-    {
-      name: "Seun",
-      description: "A cool and fit blockchain dev",
-      access: "private",
-    },
-    {
-      name: "Seun",
-      description: "A cool and fit blockchain dev",
-      access: "public",
-    },
-    {
-      name: "Seun",
-      description: "A cool and fit blockchain dev",
-      access: "public",
-    },
-    {
-      name: "Seun",
-      description: "A cool and fit blockchain dev",
-      access: "public",
-    },
-    {
-      name: "Seun",
-      description: "A cool and fit blockchain dev",
-      access: "public",
-    },
-    {
-      name: "Seun",
-      description: "A cool and fit blockchain dev",
-      access: "public",
-    },
-    {
-      name: "Seun",
-      description: "A cool and fit blockchain dev",
-      access: "public",
-    },
-    {
-      name: "Seun",
-      description: "A cool and fit blockchain dev",
-      access: "private",
-    },
-    {
-      name: "Seun",
-      description: "A cool and fit blockchain dev",
-      access: "public",
-    },
-    {
-      name: "Seun",
-      description: "A cool and fit blockchain dev",
-      access: "public",
-    },
-  ];
-
-  const fileStorage = arrayBreaker(files, 12);
+  const fileStorage = arrayBreaker(publicFiles, 12);
 
   return (
     <Box
@@ -405,7 +235,12 @@ function Library(props) {
         {fileStorage.map((item, index) => {
           return (
             page === index && (
-              <GridBox files={item} setShareModal={setShareModal} />
+              <GridBox
+                key={index}
+                files={item}
+                setShareModal={setShareModal}
+                setFileToShare={setFileToShare}
+              />
             )
           );
         })}
@@ -491,15 +326,18 @@ function Library(props) {
         <UploadForm
           setUploadModal={setUploadModal}
           contractMethods={contractMethods}
+          setSuccesModal={setSuccesModal}
+          addFile={addFile}
         />
       )}
       {shareModal && (
         <Share
           setShareModal={setShareModal}
           contractMethods={contractMethods}
+          file={fileToShare}
         />
       )}
-      {succesModal && <UploadSuccesful setSuccesModal={setSuccesModal} />}
+      {succesModal && <UploadSuccesful />}
     </Box>
   );
 }

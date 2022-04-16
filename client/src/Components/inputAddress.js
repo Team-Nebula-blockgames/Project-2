@@ -8,7 +8,7 @@ function InputAddress(props) {
     <div style={style.outer}>
       <input
         type="text"
-        placeholder="Search"
+        placeholder="Address"
         style={style.input2}
         onChange={(e) => setText(e.target.value)}
       />
