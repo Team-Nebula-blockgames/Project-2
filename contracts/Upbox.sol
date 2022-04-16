@@ -13,8 +13,8 @@ contract Upbox is ERC721, Ownable {
 
     mapping(uint256 => string) private tokenIdtoMetadata;
     uint256[] public publicTokensIds;
-    mapping(address => UserTokens) internal userTokens;
     address[] public blackListedUsers;
+    mapping(address => UserTokens) internal userTokens;
 
     struct UserTokens {
         uint256[] _publicTokens;
@@ -22,7 +22,7 @@ contract Upbox is ERC721, Ownable {
         uint256[] _receivedTokens;
     }
 
-    constructor() ERC721("Upbox", "UBX") {}
+    constructor() ERC721("Upbox", "BOX") {}
 
     /**
     @notice Uploads a new file
@@ -62,6 +62,27 @@ contract Upbox is ERC721, Ownable {
             );
     }
 
+    // all tokens in system
+    function getAllPublicTokens() public view returns (uint256[] memory) {
+        return publicTokensIds;
+    }
+
+    /** 
+    @dev gets tokens our customer made public
+    @notice This function returns an array of tokenIds that our customer made public.
+    */
+    function getMyPublicTokens() public view returns (uint256[] memory) {
+        return userTokens[msg.sender]._publicTokens;
+    }
+
+    /** 
+    @dev gets tokens our customer made private
+    @notice This function returns an array of tokenIds that our customer made private.
+    */
+    function getMyPrivateTokens() public view returns (uint256[] memory) {
+        return userTokens[msg.sender]._privateTokens;
+    }
+
     // share tokens
     function shareToken(address to, uint256 idd) public {
         userTokens[to]._receivedTokens.push(idd);
@@ -82,7 +103,11 @@ contract Upbox is ERC721, Ownable {
         publicTokensIds.pop();
     }
 
-    // add to blacklist
+    /** 
+    @dev blacklists an address.
+    @notice This function adds an address to our blacklisted addresses
+    @param userAddress the address to be blacklisted
+    */
     function addblackListedUser(address userAddress) public onlyOwner {
         blackListedUsers.push(userAddress);
     }
@@ -90,19 +115,6 @@ contract Upbox is ERC721, Ownable {
     // getblack listed users
     function getblackListedUser() public view returns (address[] memory) {
         return blackListedUsers;
-    }
-
-    // all tokens in system
-    function getAllPublicTokens() public view returns (uint256[] memory) {
-        return publicTokensIds;
-    }
-
-    function getMyPublicTokens() public view returns (uint256[] memory) {
-        return userTokens[msg.sender]._publicTokens;
-    }
-
-    function getMyPrivateTokens() public view returns (uint256[] memory) {
-        return userTokens[msg.sender]._privateTokens;
     }
 
     /**
