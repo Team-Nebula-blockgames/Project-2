@@ -22,7 +22,7 @@ contract Upbox is ERC721, Ownable {
         uint256[] _receivedTokens;
     }
 
-    constructor() ERC721("Upbox", "UBX") {}
+    constructor() ERC721("Upbox", "BOX") {}
 
     /**
     @notice Uploads a new file
@@ -62,16 +62,28 @@ contract Upbox is ERC721, Ownable {
             );
     }
 
-    // all tokens in system
-
+    /** 
+    @dev gets tokens our customer made public
+    @notice This function returns an array of tokenIds that our customer made public.
+    */ 
     function getMyPublicTokens() public view returns (uint256[] memory) {
         return userTokens[msg.sender]._publicTokens;
     }
 
+    
+    /** 
+    @dev gets tokens our customer made private
+    @notice This function returns an array of tokenIds that our customer made private.
+    */ 
     function getMyPrivateTokens() public view returns (uint256[] memory) {
         return userTokens[msg.sender]._privateTokens;
     }
 
+    /** 
+    @dev blacklists an address.
+    @notice This function adds an address to our blacklisted addresses
+    @param user the address to be blacklisted
+    */ 
     function blacklistUser(address user) public {
         blacklistedUsers.push(user);
     }
