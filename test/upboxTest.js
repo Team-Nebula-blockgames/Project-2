@@ -97,20 +97,22 @@ describe("Upbox Contract 💢", function () {
   });
 
   it("Should return all public files of a user", async function () {
+    //Arrange
     let uploadPublicTx = await upboxContract
       .connect(accounts[1])
       .uploadFile("Hello world!", false);
     await uploadPublicTx.wait();
-
     uploadPublicTx = await upboxContract
       .connect(accounts[1])
       .uploadFile("Hello world!", false);
     await uploadPublicTx.wait();
 
+    //Act
     const userTokens = await upboxContract
       .connect(accounts[1])
       .getMyPublicTokens();
-    console.log("userPublic tokens: ", userTokens);
+
+    //Assert
     assert.equal(
       userTokens.length,
       2,
@@ -174,7 +176,7 @@ describe("Upbox Contract 💢", function () {
       await txn.wait();
     };
 
-    expect(tryAddToBlacklist()).to.be.rejectedWith(
+    await expect(tryAddToBlacklist()).to.be.rejectedWith(
       "VM Exception while processing transaction: reverted with reason string 'Ownable: caller is not the owner'"
     );
   });
@@ -189,8 +191,8 @@ describe("Upbox Contract 💢", function () {
       return await upboxContract.getAllPublicTokens();
     };
 
-    expect(tryGetPublicTokens()).to.be.rejectedWith(
-      "Error: call revert exception"
+    await expect(tryGetPublicTokens()).to.be.rejectedWith(
+      "call revert exception"
     );
   });
 
@@ -205,7 +207,7 @@ describe("Upbox Contract 💢", function () {
       await txn.wait();
     };
 
-    expect(tryAddToBlacklist()).to.be.rejectedWith(
+    await expect(tryAddToBlacklist()).to.be.rejectedWith(
       "VM Exception while processing transaction: reverted with reason string 'Ownable: caller is not the owner'"
     );
   });
@@ -220,8 +222,8 @@ describe("Upbox Contract 💢", function () {
     };
 
     //Assert
-    expect(tryGetTokenUri()).to.be.rejectedWith(
-      "VM Exception while processing transaction: reverted with reason string 'Upbox: Token does not exist.'"
+    await expect(tryGetTokenUri()).to.be.rejectedWith(
+      "missing revert data in call exception"
     );
   });
 
@@ -290,8 +292,8 @@ describe("Upbox Contract 💢", function () {
     };
 
     //Assert
-    expect(tryUploadFile()).to.be.rejectedWith(
-      "Error: VM Exception while processing transaction: reverted with reason string 'Upbox: You are blacklisted.'"
+    await expect(tryUploadFile()).to.be.rejectedWith(
+      "VM Exception while processing transaction: reverted with reason string 'Upbox: You are blacklisted.'"
     );
   });
 
@@ -342,8 +344,8 @@ describe("Upbox Contract 💢", function () {
     };
 
     //Assert
-    expect(tryRemoveFile()).to.be.rejectedWith(
-      "Error: VM Exception while processing transaction: reverted with reason string 'Upbox: Out of bound.'"
+    await expect(tryRemoveFile()).to.be.rejectedWith(
+      "VM Exception while processing transaction: reverted with reason string 'Upbox: Out of bound.'"
     );
   });
 });
