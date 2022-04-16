@@ -24,7 +24,7 @@ contract Upbox is ERC721, Ownable {
 
     constructor() ERC721("Upbox", "UBX") {}
 
-    austin add the tokenUri and uploadfile function
+    //austin add the tokenUri and uploadfile function
 
     // share tokens
     function shareToken(address to, uint256 idd) public {
