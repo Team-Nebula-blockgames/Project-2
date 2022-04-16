@@ -1,14 +1,29 @@
-# Advanced Sample Hardhat Project
+# UpBox
 
-This project demonstrates an advanced Hardhat use case, integrating other tools commonly used alongside Hardhat in the ecosystem.
+This is a decentralized library where users can upload files and retrieve files, share files with other users , using their wallet address.
 
-The project comes with a sample contract, a test for that contract, a sample script that deploys that contract, and an example of a task implementation, which simply lists the available accounts. It also comes with a variety of other tools, preconfigured to work with the project code.
+The supported File types are:
+
+- Articles
+- Books
+
+Default permission for uploading file is public
 
 View Upbox contract on [etherscan](0x5797ff9d5C1Ca21f28E6E54d4b1A3261856863e5)
 
-# Client folder
+# Contribution Guide
+
+- When adding new contracts contract name and contract file name should be same.
+- All functions should have explicit comment (and test)
+-
+
+# Folder Structure
+
+The Project is divided into two part, The Client (frontend) and the Smart Contracts.
 
 The client folder is the folder for the react frontend app calling the contracts. The client/contracts directory contains the compiled contracts for the react front end application.
+
+Editing the clients folder
 
 # Steps
 

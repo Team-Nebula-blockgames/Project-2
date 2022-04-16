@@ -97,14 +97,25 @@ describe("Upbox Contract 💢", function () {
   });
 
   it("Should return all public files of a user", async function () {
-    const uploadPublicTx = await upboxContract.uploadFile(
-      "Hello world!",
-      false
-    );
+    let uploadPublicTx = await upboxContract
+      .connect(accounts[1])
+      .uploadFile("Hello world!", false);
     await uploadPublicTx.wait();
 
-    const userTokens = await upboxContract.getMyPublicTokens();
-    assert.equal(userTokens, 1, "Could not get public tokens of a user!");
+    uploadPublicTx = await upboxContract
+      .connect(accounts[1])
+      .uploadFile("Hello world!", false);
+    await uploadPublicTx.wait();
+
+    const userTokens = await upboxContract
+      .connect(accounts[1])
+      .getMyPublicTokens();
+    console.log("userPublic tokens: ", userTokens);
+    assert.equal(
+      userTokens.length,
+      2,
+      "Could not get public tokens of a user!"
+    );
   });
 
   it("Should return all private files of a user", async function () {
